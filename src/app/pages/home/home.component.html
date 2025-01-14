@@ -1,0 +1,73 @@
+<app-not-found *ngIf="fromCOMPONENT == 'not-found-comp'" class="z-0 w-full h-[90vh] absolute top-0 left-0"></app-not-found>
+
+<main class="w-full h-auto bg-neutral-900 absolute z-10 transition-all duration-300"
+      [class]="{'translate-x-[70%]':fromCOMPONENT !== 'not'}"
+      [class.trans]="fromCOMPONENT !== 'not'">
+  <div class="w-full h-screen   max-[768px]:h-auto relative">
+    <div class="pattern-b absolute top-0 left-0 w-full   z-0"></div>
+    <div class="flex justify-center items-center p-5 z-10 sticky">
+      <app-header class="sticky" [fromPAGE]="'home'"></app-header>
+    </div>
+    <div class="flex max-[768px]:flex-col  max-[912px]:flex-col h-[85vh]  bg-neutral-900 px-40 max-[768px]:px-10 items-center z-10" id="landing" [dir]="'rtl'">
+      <div  class="yekan flex flex-col text-white max-[768px]:w-full">
+        <h1 class="text-[2rem] font-bold">فست فود آرین</h1>
+        <p  class="max-[768px]:w-full max-[768px]:text-[0.7rem]">سلام! امیدوارم حالتون خوب باشه. می‌خوام درباره‌ی خودمان یعنی فست فود آرین صحبت کنم. ما در فست فود آرین با هدف ارائه غذاهای سریع، خوشمزه و باکیفیت فعالیت می‌کنیم. از همبرگرهای خوشمزه گرفته تا پیتزاها و ساندویچ‌های ویژه، هر چیزی که نیاز دارید را با بهترین مواد اولیه تهیه می‌کنیم. تیم ما متعهد است که تجربه‌ای لذت‌بخش و متفاوت از فست فود برای شما فراهم کند. در فست فود آرین، همیشه به دنبال نوآوری و ارتقاء کیفیت خدمات خود هستیم. منتظرتون هستیم تا از طعم‌های لذیذ ما لذت ببرید!</p>
+        <div class="flex gap-5 mt-6">
+          <button class="cursor-pointer max-[768px]:text-[0.7rem] p-3 px-6 rounded-xl z-10 bg-amber-500 transition-all duration-300 hover:b-shadow">محصولات ما</button>
+          <button class="cursor-pointer max-[768px]:text-[0.7rem] p-3 px-6 rounded-xl z-10 bg-amber-800 transition-all duration-300 hover:b-shadow">درباره ما</button>
+        </div>
+      </div>
+      <img  class="w-[40rem] max-[768px]:w-[40rem]" src="assets/web/logo.png">
+
+    </div>
+    <div class="flex flex-col gap-2 w-full p-3 bg-amber-500 relative" dir="rtl">
+      <h1 class="text-white yekan text-center font-bold text-[2rem]">دسته بندی ها</h1>
+      <div class="flex gap-4 z-10 mt-4 row justify-center max-[768px]:justify-start overflow-x-auto w-full items-center " dir="rtl">
+        @for (categoryITEM of categoryService.getCategories();track categoryITEM) {
+          <div  class="w-[8rem]  text-white transition-all duration-300 ring-0 cursor-pointer hover:bg-amber-800
+            h-[10rem]  justify-center items-center flex-none rounded-xl flex flex-col gap-2"
+               (click)="categoryService.nowCategory = categoryITEM.category"
+                [ngClass]="{'bg-amber-600':categoryITEM.category == categoryService.nowCategory,
+                'bg-amber-700':categoryITEM.category !== categoryService.nowCategory}">
+            <img class="w-[5rem] h-[5rem] " [src]="categoryITEM.image" title="{{categoryITEM.title}}">
+            <h1 class="yekan font-bold">{{categoryITEM.title}}</h1>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="bg-neutral-900 pb-7 top-0 left-0 w-full h-auto p-5 z-10 flex-col gap-6">
+      <div class="flex justify-center max-[768px]:justify-end items-center p-4 gap-5 ">
+        <h1 class="yekan text-white font-bold text-[2rem]">{{categoryService.getCATEGORY(categoryService.nowCategory)['title']}}</h1>
+        <img class="w-[8rem] h-[8rem]" [src]="categoryService.getCATEGORY(categoryService.nowCategory)['image']">
+      </div>
+      <div class="flex justify-center items-center w-full" dir="rtl">
+        @if (categoryService.getFoodsByCategory(categoryService.nowCategory).length == 0 ) {
+          <h1 class="text-white yekan text-[2rem] font-bold text-center w-full">این محصول هنوز تعریف نشده است</h1>
+        }
+        <div class="grid-container grid-cols-3 max-[912px]:grid-cols-2 max-[768px]:grid-cols-2 max-[767px]:grid-cols-1">
+
+          @if (categoryService.getFoodsByCategory(categoryService.nowCategory).length !== 0 ) {
+            @for (foodItem of categoryService.getFoodsByCategory(categoryService.nowCategory); track foodItem) {
+              <div class="bg-neutral-800 justify-center items-center  w-[20rem] h-[22rem] yekan p-3 flex flex-col rounded-[0.9rem]  gap-2">
+                <img [src]="foodItem.image" class="w-[10rem]">
+                <div class="flex flex-col p-2 justify-start items-start w-full" dir="rtl">
+                  <h1 class="text-white text-[1.5rem] font-bold text-right"> {{foodItem.title}}</h1>
+                  <p class="font-normal text-gray-100 h-[5rem]">{{foodItem.description}}</p>
+                </div>
+                <p class="font-bold text-amber-400 text-center">{{foodItem.price}}</p>
+
+              </div>
+            }
+          }
+
+        </div>
+      </div>
+
+    </div>
+
+
+    <app-footer class="max-[768px]:hidden mt-6"></app-footer>
+
+  </div>
+</main>
+<app-ai class="fixed left-[1rem] bottom-[1rem] z-[99] max-[768px]:left-0 max-[768px]:bottom-4"></app-ai>

@@ -1,0 +1,17 @@
+<main class="w-full h-screen bg-neutral-900 ">
+    <div class="w-full p-5 h-[8rem] flex justify-center items-center"
+    [ngClass]="{
+    'bg-amber-500':user.role === Roles.USER,
+    'bg-blue-500':user.role === Roles.ADMIN,
+    'bg-rose-600':user.role === Roles.FOUNDER}">
+      <div class="flex flex-col">
+        <div class="flex justify-center items-center">
+          <div class="flex yekan text-white text-[1.5rem] gap-2 font-bold"><span>  ! خوش آمدی </span> <span>{{user.username}}</span><span>سلام</span></div>
+          <img src="assets/web/logo.png" class="w-[10rem]" alt="">
+        </div>
+      </div>
+    </div>
+  <div class="flex flex-col">
+
+  </div>
+</main>

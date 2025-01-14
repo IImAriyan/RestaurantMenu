@@ -1,0 +1,28 @@
+<header class="rounded-xl bg-neutral-800  h-[5rem] max-[768px]:h-[4rem] w-[40rem] max-[768px]:w-[20rem] flex justify-center items-center">
+  <div class="flex justify-between items-center p-3 w-full pr-5 gap-20   max-[768px]:gap-5">
+
+    <div class="image-logo w-[5rem]">
+      <img src="assets/web/logo.png" class="w-[5rem] max-[768px]:text-[2rem] transition-all duration-300 hover:rotate-90">
+    </div>
+
+    <div class="labels text-white font-bold yekan flex gap-5 max-[768px]:gap-3 ">
+      @for (item of [
+        {title:"درباره ما",route:"/about-us"},
+        {title:"محصولات",route:"/products"},
+        {title:"خانه",route:"/restaurant-menu"}
+      ];track item) {
+        <h1 class="cursor-pointer transition-all duration-300 ring-0
+        hover:text-amber-400 max-[768px]:text-[0.6rem]" [queryParams]="{'data':fromPAGE}" routerLink="{{item.route}}">{{ item.title }}</h1>
+      }
+    </div>
+
+    <div class="flex justify-center items-center yekan text-white">
+      <button class="p-2  max-[768px]:text-[0.6rem]  max-[768px]:w-[6rem] px-4 bg-amber-600 rounded-xl text-[0.8rem] transition-all duration-300 cursor-pointer hover:bg-amber-500">
+        ثبت نام / ورود
+      </button>
+    </div>
+
+  </div>
+
+</header>
+
