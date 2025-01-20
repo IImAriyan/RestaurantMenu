@@ -6,6 +6,7 @@ import {provideHttpClient, withFetch} from "@angular/common/http";
 import {ActionReducerMap, MetaReducer, provideStore, StoreModule} from '@ngrx/store';
 import {localStorageMetaReducer} from "./state/local-storage.reducer";
 import {AuthState} from "./state/app.state";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 export const reducers: ActionReducerMap<{ auth: AuthState }, any> = {
@@ -18,7 +19,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(withFetch()),
-    provideStore(reducers,{metaReducers:metaReducers}),
+    provideStore(reducers,{metaReducers:metaReducers}), provideAnimationsAsync(),
   ],
 
 

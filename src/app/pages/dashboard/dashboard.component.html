@@ -1,17 +1,66 @@
-<main class="w-full h-screen bg-neutral-900 ">
-    <div class="w-full p-5 h-[8rem] flex justify-center items-center"
-    [ngClass]="{
+
+<div  class="w-full p-5 h-[8rem] flex  items-center relative"
+
+     [ngClass]="{
     'bg-amber-500':user.role === Roles.USER,
     'bg-blue-500':user.role === Roles.ADMIN,
     'bg-rose-600':user.role === Roles.FOUNDER}">
-      <div class="flex flex-col">
-        <div class="flex justify-center items-center">
-          <div class="flex yekan text-white text-[1.5rem] gap-2 font-bold"><span>  ! خوش آمدی </span> <span>{{user.username}}</span><span>سلام</span></div>
-          <img src="assets/web/logo.png" class="w-[10rem]" alt="">
-        </div>
+
+  <div routerLink="/restaurant-menu" class=" top-[2rem] left-[0.8rem] absolute
+      bg-red-600 text-white rounded-xl z-10 p-1 text-[0.9rem] text-center yekan cursor-pointer px-3 py-5 w-[10rem]  transition-all duration-300 hover:bg-red-500 "
+       [ngClass]="{
+    'bg-red-700':user.role === Roles.FOUNDER}">
+    برگشت به سایت
+  </div>
+  <div class="flex justify-center w-full  ">
+    <div class="flex flex-col justify-center ">
+      <div class="flex justify-center w-full items-center">
+        <div class="flex yekan text-white text-[1.5rem] gap-2 font-bold"><span>  ! خوش آمدی </span> <span>{{user.username}}</span><span>سلام</span></div>
+        <img src="assets/web/logo.png" class="w-[10rem]" alt="">
       </div>
     </div>
-  <div class="flex flex-col">
-
   </div>
+</div>
+<main class="w-full flex h-full bg-neutral-900 justify-start">
+    <div class="w-full h-full flex  justify-start items-end">
+      <div class="w-full h-full grow p-4">
+        @switch (nowPage) {
+          @case ('products') {
+            <div class="flex mt-4 justify-center items-center yekan text-white text-[2rem] font-bold">
+              <h1>محصولات</h1>
+            </div>
+            <div class=""></div>
+          }
+        }
+      </div>
+      <div class="flex flex-col w-[10rem] p-2 h-full  border-l-2 border-gray-700 ">
+        <div (click)="setPage('home')" class="w-full yekan flex gap-2 cursor-pointer   text-white  justify-center items-center p-5 ">
+          <h1>خانه</h1>
+          <mat-icon>home</mat-icon>
+        </div>
+        @if (user.role == Roles.ADMIN || user.role == Roles.FOUNDER) {
+          <div (click)="setPage('products')" class="w-full yekan flex gap-2 cursor-pointer  text-white  justify-center items-center p-5 ">
+            <h1>محصولات</h1>
+            <mat-icon>work</mat-icon>
+          </div>
+        }
+        @if (user.role == Roles.FOUNDER) {
+          <div (click)="setPage('users')" class="w-full yekan flex gap-2 cursor-pointer   text-white  justify-center items-center p-5 ">
+            <h1>کاربران</h1>
+            <mat-icon>contacts</mat-icon>
+          </div>
+        }
+        @if (user.role == Roles.FOUNDER) {
+          <div (click)="setPage('website')" class="w-full yekan flex gap-2 cursor-pointer   text-white  justify-center items-center p-5 ">
+            <h1>وبسایت</h1>
+            <mat-icon>border_color</mat-icon>
+          </div>
+        }
+
+
+
+      </div>
+
+    </div>
+
 </main>

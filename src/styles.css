@@ -46,6 +46,10 @@
     z-index: -1;
   }
 
+  .ag-theme-alpine .ag-header {
+    background-color: #f4f4f4;
+  }
+
   @keyframes animatePlus {
     0%{
       transform: scale(1);
@@ -73,3 +77,6 @@
 }
 
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

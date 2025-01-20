@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center p-3 w-full pr-5 gap-20   max-[768px]:gap-5">
 
     <div class="image-logo w-[5rem]">
-      <img src="assets/web/logo.png" class="w-[5rem] max-[768px]:text-[2rem] transition-all duration-300 hover:rotate-90">
+      <img src="assets/web/logo.png" class="w-[5rem]  max-[768px]:text-[2rem] transition-all duration-300 hover:rotate-90">
     </div>
 
     <div class="labels text-white font-bold yekan flex gap-5 max-[768px]:gap-3 ">
@@ -16,11 +16,23 @@
       }
     </div>
 
-    <div class="flex justify-center items-center yekan text-white">
-      <button class="p-2  max-[768px]:text-[0.6rem]  max-[768px]:w-[6rem] px-4 bg-amber-600 rounded-xl text-[0.8rem] transition-all duration-300 cursor-pointer hover:bg-amber-500">
-        ثبت نام / ورود
-      </button>
-    </div>
+
+    @switch (isLoggedIn) {
+      @case (true) {
+        <div>
+          <img routerLink="/dashboard" src="assets/button/profile.png" class="w-[3.5rem] rounded-[50%] p-1 border-2 cursor-pointer transition-all
+           duration-300 hover:rotate-[-90deg] border-green-500 max-[768px]:w-[2.7rem]">
+        </div>
+      }
+      @case (false) {
+        <div class="flex justify-center items-center yekan text-white">
+          <button routerLink="/authentication/login"  class="p-2  max-[768px]:text-[0.6rem]  max-[768px]:w-[6rem] px-4 bg-amber-600 rounded-xl text-[0.8rem] transition-all duration-300 cursor-pointer hover:bg-amber-500">
+            ثبت نام / ورود
+          </button>
+        </div>
+      }
+    }
+
 
   </div>
 

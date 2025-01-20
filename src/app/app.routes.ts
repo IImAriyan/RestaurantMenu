@@ -5,6 +5,7 @@ import {LoginAuthComponent} from "./Authentication/login-auth/login-auth.compone
 import {RegisterAuthComponent} from "./Authentication/register-auth/register-auth.component";
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {authGuard} from "./guards/auth.guard";
+import {authenticationGuard} from "./guards/authentication.guard"
 
 export const routes: Routes = [
   {
@@ -28,11 +29,13 @@ export const routes: Routes = [
     children:[
       {
         path:'login',
-        component:LoginAuthComponent
+        component:LoginAuthComponent,
+        canActivate:[authenticationGuard]
       },
       {
         path:'register',
-        component:RegisterAuthComponent
+        component:RegisterAuthComponent,
+        canActivate:[authenticationGuard]
       }
     ],
   },

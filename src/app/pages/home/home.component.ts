@@ -32,15 +32,11 @@ export class HomeComponent {
       this.fromCOMPONENT =  params['data'] || 'not'
     });
 
-    //
+
     setTimeout(()=>{
         this.fromCOMPONENT = 'not'
         // delete route
-      this.router.navigate(['/restaurant-menu'])
+      this.router.navigate([])
     },2000)
-
-
-
-
   }
 }

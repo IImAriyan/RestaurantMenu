@@ -3,12 +3,15 @@ import {NgClass, NgIf} from "@angular/common";
 import {Chat} from "../AIModel/chat";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AiServiceService} from "../ai-service.service";
-import {aiConversation_History} from "../../interfaces/interfaces";
+import {aiConversation_History, JwtDecoded} from "../../interfaces/interfaces";
 import {Store} from "@ngrx/store";
 import {AuthState} from "../../state/app.state";
 import {isTokenExpired} from "../../state/auth";
 import {UserService} from "../../services/user.service";
 import {RouterLink} from "@angular/router";
+import {DashboardService} from "../../services/dashboard.service";
+import {jwtDecode} from "jwt-decode";
+import {User} from "../../models/user";
 
 
 @Component({
@@ -32,6 +35,7 @@ export class AiComponent {
   inputMessage:string = "";
   isLoggedIn: boolean = false;
   token: string | null = null;
+  userConversation: aiConversation_History[] = []
 
   form:FormGroup = new FormGroup({
     message: new FormControl("", [Validators.required]),
@@ -46,12 +50,36 @@ export class AiComponent {
   menuShow2 : boolean = false;
   stop: boolean = false;
 
-  constructor(private aiService:AiServiceService,private userAuth: UserService,private store:Store<{ auth: AuthState }>) {
+  constructor(private aiService:AiServiceService,private dashboardService:DashboardService,private userAuth: UserService,private store:Store<{ auth: AuthState }>) {
     if (!this.stop) {
       store.select(state => state.auth).subscribe((auth: AuthState) => {
         this.token = auth.token
         if (this.token && !isTokenExpired(this.token)) {
           this.isLoggedIn = true
+          const decodedJWT: JwtDecoded = jwtDecode<JwtDecoded>(this.token)
+          const userID : string = decodedJWT.user_id
+          dashboardService.userDATA(this.token,userID).subscribe((response:User)=>{
+            const user = response
+
+            // loading messages
+            this.userConversation = JSON.parse(user.conversation_history)
+            console.log(this.userConversation)
+            for (const chat of this.userConversation) {
+              switch (chat.role) {
+                case ("user") :
+                  const userMessage:Chat = new Chat("user",chat.content)
+                  this.chats.push(userMessage)
+                  break;
+                case ("assistant") :
+                  const aiMessage:Chat = new Chat("AI",chat.content)
+                  this.chats.push(aiMessage)
+                  break;
+              }
+            }
+
+
+          })
+
         }else {
           this.isLoggedIn = false
         }
@@ -83,8 +111,9 @@ export class AiComponent {
 
   sendMessage(message:string, isButton:boolean) {
     if (this.form.valid || isButton ) {
-      console.log(this.isLoggedIn)
-      console.log(this.token)
+      const decodedJWT: JwtDecoded = jwtDecode<JwtDecoded>(this.token+"")
+      const userID : string = decodedJWT.user_id
+
 
         if (this.isLoggedIn && this.token) {
           const newMessage:Chat = new Chat("user",message)
@@ -92,16 +121,19 @@ export class AiComponent {
           const aiMessage:Chat = new Chat("AI","")
           this.chats.push(aiMessage)
 
-          const userConversation: aiConversation_History = {
-            role:"user",
-            content:newMessage.message
-          }
+          console.log(message)
           this.aiService.getAIMessage(message,this.token).subscribe((response:any) =>{
             this.chats[this.chats.length-1].message = response.message
-            const aiConversation: aiConversation_History = {
-              role:"assistant",
-              content:response.message
-            }
+            const decodedJWT: JwtDecoded = jwtDecode<JwtDecoded>(this.token+"")
+            const userID : string = decodedJWT.user_id
+
+            this.dashboardService.userDATA(this.token,userID).subscribe((response:User)=> {
+              const user = response
+
+              // loading messages
+              this.userConversation = JSON.parse(user.conversation_history)
+              console.log(JSON.parse(user.conversation_history))
+            })
           })
           this.form.controls['message'].setValue("")
         }

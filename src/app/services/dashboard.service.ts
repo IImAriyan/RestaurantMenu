@@ -11,7 +11,7 @@ export class DashboardService {
   apiLink: string = environment.websiteAPI;
   constructor(private http: HttpClient) {}
 
-  userDATA(token:string,userId:string):Observable<User> {
+  userDATA(token:string | null,userId:string):Observable<User> {
     return this.http.post<User>(this.apiLink+"/api/user/userinfo/",{
       "userID":userId
     }, {
